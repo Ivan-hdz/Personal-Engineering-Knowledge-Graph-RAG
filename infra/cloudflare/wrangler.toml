@@ -1,0 +1,6 @@
+name = "personal-rag-webhook"
+main = "worker.ts"
+compatibility_date = "2024-01-01"
+
+[vars]
+# INGESTION_WEBHOOK_URL = "http://your-local-or-lambda-endpoint:3456"

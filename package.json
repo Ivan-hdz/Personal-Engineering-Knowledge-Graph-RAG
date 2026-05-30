@@ -1,0 +1,22 @@
+{
+  "name": "personal-rag",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "bun run --filter '*' build",
+    "ingest": "bun run scripts/admin.ts ingest",
+    "extract": "bun run scripts/admin.ts extract",
+    "search": "bun run scripts/admin.ts search",
+    "stats": "bun run scripts/admin.ts stats",
+    "mcp": "bun run packages/mcp-server/src/index.ts",
+    "webhook": "bun run packages/ingestion/src/webhook-server.ts",
+    "watch:obsidian": "bun run scripts/watch-obsidian.ts",
+    "watch:cursor": "bun run scripts/watch-cursor.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "typescript": "^5.7.0"
+  }
+}

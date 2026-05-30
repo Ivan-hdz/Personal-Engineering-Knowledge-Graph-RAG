@@ -1,0 +1,16 @@
+{
+  "name": "@personal-rag/mcp-server",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "./src/index.ts",
+  "scripts": {
+    "start": "bun run src/index.ts",
+    "build": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.6.0",
+    "@personal-rag/core": "workspace:*",
+    "@personal-rag/retrieval": "workspace:*",
+    "zod": "^3.24.1"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "personal-rag": {
+      "command": "bun",
+      "args": ["run", "packages/mcp-server/src/index.ts"],
+      "cwd": "f:\\Git\\personal-rag"
+    }
+  }
+}

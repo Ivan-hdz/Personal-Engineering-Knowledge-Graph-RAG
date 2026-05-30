@@ -1,0 +1,5 @@
+mongodb_uri           = "mongodb+srv://..."
+github_webhook_secret = "your-github-secret"
+gitlab_webhook_secret = "your-gitlab-secret"
+embedding_provider    = "openai"
+ollama_base_url       = ""

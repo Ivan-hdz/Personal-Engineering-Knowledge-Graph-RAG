@@ -1,0 +1,9 @@
+{
+  "name": "personal-rag-webhook-lambda",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "handler.ts",
+  "dependencies": {
+    "mongodb": "^6.12.0"
+  }
+}

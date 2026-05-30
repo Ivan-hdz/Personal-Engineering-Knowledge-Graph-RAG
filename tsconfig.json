@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "paths": {
+      "@personal-rag/core": ["./packages/core/src/index.ts"],
+      "@personal-rag/core/*": ["./packages/core/src/*"],
+      "@personal-rag/ingestion": ["./packages/ingestion/src/index.ts"],
+      "@personal-rag/ingestion/*": ["./packages/ingestion/src/*"],
+      "@personal-rag/extraction": ["./packages/extraction/src/index.ts"],
+      "@personal-rag/extraction/*": ["./packages/extraction/src/*"],
+      "@personal-rag/retrieval": ["./packages/retrieval/src/index.ts"],
+      "@personal-rag/retrieval/*": ["./packages/retrieval/src/*"]
+    }
+  },
+  "exclude": ["node_modules", "dist", "infra"]
+}
