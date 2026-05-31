@@ -1,0 +1,200 @@
+{
+  "main": {
+    "id": "b9e070a56164080c",
+    "type": "split",
+    "children": [
+      {
+        "id": "5f9d3424470e3152",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "34ac19640af91e30",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "09 - Fundamentos teóricos.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "09 - Fundamentos teóricos"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "a7e819c8247b8e60",
+    "type": "split",
+    "children": [
+      {
+        "id": "1d1ca9fa5698f139",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "bd34a0a52f4bfa6a",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Explorador de archivos"
+            }
+          },
+          {
+            "id": "3c32252bb918078f",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Buscar"
+            }
+          },
+          {
+            "id": "ef2388c6c33f2f0b",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Marcadores"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "41ddbdfc939d4c79",
+    "type": "split",
+    "children": [
+      {
+        "id": "3b00b583fc32b127",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "a8eec79599788b29",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "09 - Fundamentos teóricos.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Enlaces entrantes de 09 - Fundamentos teóricos"
+            }
+          },
+          {
+            "id": "547f712d1ba20257",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "09 - Fundamentos teóricos.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Enlaces salientes de 09 - Fundamentos teóricos"
+            }
+          },
+          {
+            "id": "2b0c79e9e3047e69",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Etiquetas"
+            }
+          },
+          {
+            "id": "da60e3e92604cc61",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "Todas las propiedades"
+            }
+          },
+          {
+            "id": "f329d97afcbed44a",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "09 - Fundamentos teóricos.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Esquema de 09 - Fundamentos teóricos"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Abrir selector rápido": false,
+      "graph:Abrir vista gráfica": false,
+      "canvas:Crear nuevo lienzo": false,
+      "daily-notes:Abrir la nota de hoy": false,
+      "templates:Insertar plantilla": false,
+      "command-palette:Abrir paleta de comandos": false,
+      "bases:Crear nueva base": false
+    }
+  },
+  "active": "34ac19640af91e30",
+  "lastOpenFiles": [
+    "00 - Índice.md",
+    "04 - Packages.md",
+    "09 - Fundamentos teóricos.md",
+    "05 - Infraestructura.md",
+    "03 - Scripts y comandos.md",
+    "02 - Arquitectura.md",
+    "01 - Objetivo.md",
+    "Bienvenido.md",
+    "08 - Replicar el sistema.md",
+    "07 - Guía de inicio.md",
+    "06 - Costos.md"
+  ]
+}
