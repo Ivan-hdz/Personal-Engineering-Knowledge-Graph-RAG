@@ -1,8 +1,14 @@
 import { createHash } from "node:crypto";
+import dns from "node:dns";
 import { MongoClient, type Db, type Collection, type Document } from "mongodb";
 import { config, requireMongoUri } from "./config.ts";
 import type { KnowledgeDocument, CollectionName } from "./models.ts";
-import { COLLECTIONS } from "./models.ts";
+import { COLLECTION } from "./models.ts";
+
+// Bun's c-ares resolver fails to reach IPv6-only DNS servers on Windows,
+// causing ECONNREFUSED on the SRV lookup required by mongodb+srv:// URIs.
+// Fall back to public resolvers so the SRV query always succeeds.
+dns.setServers(["8.8.8.8", "1.1.1.1", "8.8.4.4"]);
 
 let client: MongoClient | null = null;
 let db: Db | null = null;
@@ -12,6 +18,7 @@ export async function getDb(): Promise<Db> {
 
   client = new MongoClient(requireMongoUri());
   await client.connect();
+  console.log("Connected to MongoDB");
   db = client.db(config.mongodb.db);
   return db;
 }
@@ -37,16 +44,14 @@ export function hashContent(content: string): string {
 
 export async function ensureIndexes(): Promise<void> {
   const database = await getDb();
+  const collection = database.collection(COLLECTION);
 
-  for (const name of Object.values(COLLECTIONS)) {
-    const collection = database.collection(name);
-    await collection.createIndex({ contentHash: 1 }, { unique: true, sparse: true });
-    await collection.createIndex({ source: 1, date: -1 });
-    await collection.createIndex({ project: 1, date: -1 });
-    await collection.createIndex({ tags: 1 });
-    await collection.createIndex({ extracted: 1 });
-    await collection.createIndex({ type: 1 });
-  }
+  await collection.createIndex({ contentHash: 1 }, { unique: true, sparse: true });
+  await collection.createIndex({ source: 1, date: -1 });
+  await collection.createIndex({ project: 1, date: -1 });
+  await collection.createIndex({ tags: 1 });
+  await collection.createIndex({ extracted: 1 });
+  await collection.createIndex({ type: 1 });
 }
 
 export const VECTOR_INDEX_DEFINITION = {

@@ -167,11 +167,16 @@ bun run scripts/create-vector-index.ts
 
 | Problema | Solución |
 |----------|----------|
-| `$vectorSearch` falla | Crear índice manual en Atlas UI (768 dims Ollama) |
+| `$vectorSearch` falla | Crear índice manual en Atlas UI sobre `knowledge` (768 dims Ollama) |
 | Ollama connection refused | `ollama serve` + verificar `OLLAMA_BASE_URL` |
-| MCP no aparece en Cursor | Reiniciar Cursor, verificar `cwd` en mcp.json |
+| MCP no aparece en Cursor | Reiniciar Cursor; usar ruta absoluta a `bun.exe` en `mcp.json` — ver [[10 - MCP y Hooks globales]] |
+| Hook no ingesta | Probar `bun run post-conversation`; revisar canal **Hooks** en Output |
+| `inserted=0` siempre en hook | Normal si transcript ya ingerido (dedup); probar chat nuevo |
 | `extracted: false` no baja | `bun run extract --limit=200` |
+| `extracted=0, skipped=N` | LLM no encontró conocimiento útil; chats muy cortos o sin contenido técnico |
 | Webhook 401 | Verificar secrets en `.env` y en GitHub/GitLab |
 | Duplicados en ingesta | Normal — dedup por `contentHash` los salta |
+
+Ver guía detallada: [[03 - Scripts y comandos#Verificar hook y extract]]
 
 Ver también: [[07 - Guía de inicio]], [[00 - Índice]]

@@ -22,10 +22,7 @@ flowchart TB
     end
 
     subgraph storage [MongoDB Atlas]
-        Conv[conversations]
-        Dec[decisions]
-        Pat[code_patterns]
-        Inc[incidents]
+        Knowledge[knowledge\ntype: conversation | decision | pattern | incident]
     end
 
     subgraph processing [packages/extraction]
@@ -44,16 +41,11 @@ flowchart TB
     ChatGPT --> Adapters
     Jira --> Adapters
 
-    Adapters --> Chunker --> Embedder --> Conv
-    Conv --> LLM
-    LLM --> Dec
-    LLM --> Pat
-    LLM --> Inc
+    Adapters --> Chunker --> Embedder --> Knowledge
+    Knowledge --> LLM
+    LLM --> Knowledge
 
-    Conv --> VectorSearch
-    Dec --> VectorSearch
-    Pat --> VectorSearch
-    Inc --> VectorSearch
+    Knowledge --> VectorSearch
     VectorSearch --> MCP
     MCP --> CursorIDE[Cursor IDE]
 ```
@@ -66,14 +58,14 @@ flowchart TB
 2. Normaliza metadata: `source`, `project`, `date`, `tags`, etc.
 3. El chunker divide el texto (~512 palabras, overlap 64)
 4. El cliente de embeddings genera vectores (Ollama/OpenAI/Voyage)
-5. Upsert en MongoDB con deduplicación por `contentHash`
+5. Upsert en la colección `knowledge` con deduplicación por `contentHash`
 
 ### 2. Extracción
 
-1. Busca documentos en `conversations` con `extracted: false`
+1. Busca documentos en `knowledge` con `type: "conversation"` y `extracted: false`
 2. Envía contenido al LLM con prompt estructurado
 3. Clasifica en `decision`, `pattern` o `incident`
-4. Guarda en la colección correspondiente con embedding propio
+4. Guarda en la misma colección `knowledge` con el `type` correspondiente y embedding propio
 5. Marca el documento origen como `extracted: true`
 
 ### 3. Recuperación

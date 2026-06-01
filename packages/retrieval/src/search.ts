@@ -1,22 +1,32 @@
 import {
-  COLLECTIONS,
+  COLLECTION,
   config,
   embedText,
   getCollection,
-  type CollectionName,
+  type DocumentType,
   type KnowledgeDocument,
   type SearchFilters,
   type SearchResult,
 } from "@personal-rag/core";
 
-function buildVectorFilter(filters?: SearchFilters): Record<string, unknown> {
+interface VectorFilterOptions extends SearchFilters {
+  types?: DocumentType[];
+}
+
+function buildVectorFilter(filters?: VectorFilterOptions): Record<string, unknown> {
   const filter: Record<string, unknown> = {};
 
   if (filters?.source) filter.source = filters.source;
   if (filters?.project) filter.project = filters.project;
-  if (filters?.type) filter.type = filters.type;
   if (filters?.repository) filter.repository = filters.repository;
   if (filters?.tags?.length) filter.tags = { $in: filters.tags };
+
+  if (filters?.types?.length) {
+    filter.type =
+      filters.types.length === 1 ? filters.types[0] : { $in: filters.types };
+  } else if (filters?.type) {
+    filter.type = filters.type;
+  }
 
   if (filters?.dateRange) {
     filter.date = {
@@ -28,13 +38,12 @@ function buildVectorFilter(filters?: SearchFilters): Record<string, unknown> {
   return filter;
 }
 
-async function vectorSearchCollection(
-  collectionName: CollectionName,
+async function vectorSearch(
   query: string,
-  filters?: SearchFilters,
+  filters?: VectorFilterOptions,
 ): Promise<SearchResult[]> {
   const queryEmbedding = await embedText(query);
-  const collection = await getCollection(collectionName);
+  const collection = await getCollection(COLLECTION);
   const limit = filters?.limit ?? 10;
   const vectorFilter = buildVectorFilter(filters);
 
@@ -80,16 +89,15 @@ async function vectorSearchCollection(
       document: doc as unknown as KnowledgeDocument,
     }));
   } catch {
-    return fallbackTextSearch(collectionName, query, filters);
+    return fallbackTextSearch(query, filters);
   }
 }
 
 async function fallbackTextSearch(
-  collectionName: CollectionName,
   query: string,
-  filters?: SearchFilters,
+  filters?: VectorFilterOptions,
 ): Promise<SearchResult[]> {
-  const collection = await getCollection(collectionName);
+  const collection = await getCollection(COLLECTION);
   const filter = buildVectorFilter(filters);
   const limit = filters?.limit ?? 10;
 
@@ -112,33 +120,18 @@ async function fallbackTextSearch(
   }));
 }
 
-async function searchAcrossCollections(
-  collections: CollectionName[],
-  query: string,
-  filters?: SearchFilters,
-): Promise<SearchResult[]> {
-  const allResults = await Promise.all(
-    collections.map((name) => vectorSearchCollection(name, query, filters)),
-  );
-
-  return allResults
-    .flat()
-    .sort((a, b) => b.score - a.score)
-    .slice(0, filters?.limit ?? 10);
-}
-
 export async function searchKnowledge(
   query: string,
   filters?: SearchFilters,
 ): Promise<SearchResult[]> {
-  return searchAcrossCollections(Object.values(COLLECTIONS), query, filters);
+  return vectorSearch(query, filters);
 }
 
 export async function searchIncidents(
   query: string,
   filters?: Omit<SearchFilters, "type">,
 ): Promise<SearchResult[]> {
-  return vectorSearchCollection(COLLECTIONS.incidents, query, {
+  return vectorSearch(query, {
     ...filters,
     type: "incident",
   });
@@ -148,7 +141,7 @@ export async function searchPatterns(
   query: string,
   filters?: Omit<SearchFilters, "type">,
 ): Promise<SearchResult[]> {
-  return vectorSearchCollection(COLLECTIONS.code_patterns, query, {
+  return vectorSearch(query, {
     ...filters,
     type: "pattern",
   });
@@ -158,7 +151,7 @@ export async function searchDecisions(
   query: string,
   filters?: Omit<SearchFilters, "type">,
 ): Promise<SearchResult[]> {
-  return vectorSearchCollection(COLLECTIONS.decisions, query, {
+  return vectorSearch(query, {
     ...filters,
     type: "decision",
   });
@@ -168,11 +161,10 @@ export async function searchArchitecture(
   query: string,
   filters?: SearchFilters,
 ): Promise<SearchResult[]> {
-  return searchAcrossCollections(
-    [COLLECTIONS.decisions, COLLECTIONS.code_patterns],
-    query,
-    filters,
-  );
+  return vectorSearch(query, {
+    ...filters,
+    types: ["decision", "pattern"],
+  });
 }
 
 export function formatSearchResults(results: SearchResult[]): string {

@@ -1,8 +1,7 @@
 import {
   type IngestInput,
   type KnowledgeDocument,
-  type CollectionName,
-  collectionForType,
+  COLLECTION,
   getCollection,
   hashContent,
   embedTexts,
@@ -18,8 +17,7 @@ export interface IngestResult {
 export async function ingestDocument(input: IngestInput): Promise<string | null> {
   const now = new Date().toISOString();
   const contentHash = hashContent(input.content);
-  const collectionName = collectionForType(input.metadata.type);
-  const collection = await getCollection(collectionName);
+  const collection = await getCollection(COLLECTION);
 
   const existing = await collection.findOne({ contentHash });
   if (existing) return null;
@@ -68,12 +66,9 @@ export async function ingestRawContent(
   return ingestDocuments(inputs);
 }
 
-export async function markExtracted(
-  collectionName: CollectionName,
-  documentId: string,
-): Promise<void> {
+export async function markExtracted(documentId: string): Promise<void> {
   const { ObjectId } = await import("mongodb");
-  const collection = await getCollection(collectionName);
+  const collection = await getCollection(COLLECTION);
   await collection.updateOne(
     { _id: new ObjectId(documentId) },
     { $set: { extracted: true, updatedAt: new Date().toISOString() } },

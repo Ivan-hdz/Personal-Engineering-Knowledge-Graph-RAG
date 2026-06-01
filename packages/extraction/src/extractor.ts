@@ -1,9 +1,8 @@
 import {
-  COLLECTIONS,
+  COLLECTION,
   ExtractedKnowledgeSchema,
   type ExtractedKnowledge,
   type KnowledgeDocument,
-  collectionForType,
   getCollection,
   getLLMClient,
   embedText,
@@ -70,8 +69,7 @@ export async function saveExtractedKnowledge(
     .join("\n\n");
 
   const contentHash = hashContent(`extracted:${sourceDoc.contentHash}:${extracted.type}`);
-  const collectionName = collectionForType(extracted.type);
-  const collection = await getCollection(collectionName);
+  const collection = await getCollection(COLLECTION);
 
   const existing = await collection.findOne({ contentHash });
   if (existing) return null;
@@ -108,9 +106,9 @@ export async function saveExtractedKnowledge(
 }
 
 export async function runExtractionBatch(limit = 50): Promise<ExtractionResult> {
-  const collection = await getCollection(COLLECTIONS.conversations);
+  const collection = await getCollection(COLLECTION);
   const unprocessed = await collection
-    .find({ extracted: { $ne: true } })
+    .find({ type: "conversation", extracted: { $ne: true } })
     .limit(limit)
     .toArray();
 
@@ -124,7 +122,7 @@ export async function runExtractionBatch(limit = 50): Promise<ExtractionResult> 
 
     if (!knowledge || knowledge.confidence < 0.3) {
       skipped += 1;
-      await markExtracted(COLLECTIONS.conversations, doc._id.toString());
+      await markExtracted(doc._id.toString());
       continue;
     }
 
@@ -134,7 +132,7 @@ export async function runExtractionBatch(limit = 50): Promise<ExtractionResult> 
     );
 
     if (id) extracted += 1;
-    await markExtracted(COLLECTIONS.conversations, doc._id.toString());
+    await markExtracted(doc._id.toString());
   }
 
   return { processed, extracted, skipped };

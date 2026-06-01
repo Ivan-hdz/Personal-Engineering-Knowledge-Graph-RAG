@@ -69,8 +69,8 @@ Extracción de conocimiento estructurado post-ingesta.
 | Función | Descripción |
 |---------|-------------|
 | `extractFromDocument()` | Envía contenido al LLM, parsea JSON |
-| `saveExtractedKnowledge()` | Guarda en colección según `type` |
-| `runExtractionBatch()` | Procesa N documentos con `extracted: false` |
+| `saveExtractedKnowledge()` | Guarda en `knowledge` con el `type` extraído |
+| `runExtractionBatch()` | Procesa N conversaciones con `extracted !== true` |
 
 **Output del LLM:**
 ```json
@@ -87,6 +87,8 @@ Extracción de conocimiento estructurado post-ingesta.
 **Umbral:** documentos con `confidence < 0.3` se marcan como procesados sin guardar.
 
 **Invocado por:** `bun run extract`, [[03 - Scripts y comandos#cron-extract.ts|cron-extract.ts]], [[03 - Scripts y comandos#post-conversation.ts|post-conversation.ts]]
+
+**Verificar:** [[03 - Scripts y comandos#Verificar hook y extract]] — `bun run extract` debe retornar `{ processed, extracted, skipped }`; `bun run stats` debe mostrar `unextracted` bajando en `conversation`.
 
 ---
 

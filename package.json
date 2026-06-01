@@ -10,10 +10,11 @@
     "extract": "bun run scripts/admin.ts extract",
     "search": "bun run scripts/admin.ts search",
     "stats": "bun run scripts/admin.ts stats",
-    "mcp": "bun run packages/mcp-server/src/index.ts",
+    "mcp": "bun run scripts/start-mcp.ts",
     "webhook": "bun run packages/ingestion/src/webhook-server.ts",
     "watch:obsidian": "bun run scripts/watch-obsidian.ts",
-    "watch:cursor": "bun run scripts/watch-cursor.ts"
+    "watch:cursor": "bun run scripts/watch-cursor.ts",
+    "post-conversation": "bun run scripts/hooks/post-conversation.ts"
   },
   "devDependencies": {
     "@types/bun": "latest",

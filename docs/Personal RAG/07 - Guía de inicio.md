@@ -75,9 +75,22 @@ bun run scripts/create-vector-index.ts
 ```
 
 Si el índice vectorial falla vía driver, créalo manualmente en Atlas UI:
-- Database → Search → Create Search Index
+- Database → Search → Create Search Index → colección **`knowledge`**
 - Usar la definición JSON que imprime el script
 - Dimensiones: **768** para Ollama, **1536** para OpenAI
+
+> Solo se necesita **un** índice vectorial (campo `type` actúa como filtro pre-vector).
+
+### Migración desde colecciones legacy
+
+Si ya tienes datos en `conversations`, `decisions`, `code_patterns` o `incidents`:
+
+```bash
+bun run scripts/migrate-to-polymorphic.ts
+bun run stats
+```
+
+Verifica los conteos y elimina las colecciones legacy manualmente en Atlas cuando estés conforme.
 
 ---
 
@@ -111,6 +124,27 @@ bun run extract
 bun run stats   # unextracted debería bajar
 ```
 
+**Salida esperada de extract:**
+
+```
+Running extraction batch (limit=50)...
+{ processed: 5, extracted: 2, skipped: 3 }
+```
+
+- `processed` — conversaciones revisadas
+- `extracted` — nodos `decision` / `pattern` / `incident` creados
+- `skipped` — sin valor suficiente (confidence < 0.3)
+
+**Salida esperada de stats (antes → después):**
+
+```
+knowledge: 42 documents (8 unextracted)
+  conversation: 30 (8 unextracted)   →   conversation: 30 (3 unextracted)
+  decision: 5 (0 unextracted)        →   decision: 7 (0 unextracted)
+```
+
+Ver guía completa: [[03 - Scripts y comandos#Verificar hook y extract]]
+
 ---
 
 ## Paso 8 — Probar búsqueda
@@ -124,19 +158,20 @@ bun run search "CORS" --type=incident
 
 ## Paso 9 — Conectar MCP a Cursor
 
-El archivo `.cursor/mcp.json` ya está configurado. Ajustar `cwd` a tu ruta local:
+Copia y ajusta la plantilla de `config/cursor-global/mcp.json.example`:
 
 ```json
 {
   "mcpServers": {
     "personal-rag": {
-      "command": "bun",
-      "args": ["run", "packages/mcp-server/src/index.ts"],
-      "cwd": "F:\\Git\\personal-rag"
+      "command": "C:\\Users\\TU_USUARIO\\.bun\\bin\\bun.exe",
+      "args": ["F:\\Git\\personal-rag\\scripts\\start-mcp.ts"]
     }
   }
 }
 ```
+
+> **Windows:** usa ruta absoluta a `bun.exe`. Cursor lanza MCP con PATH mínimo y `"command": "bun"` suele fallar.
 
 Reiniciar Cursor. Verificar en Settings → MCP que `personal-rag` aparece con 5 tools.
 
@@ -147,7 +182,24 @@ Probar en chat: *"Busca en mi knowledge base problemas similares de CORS en Svel
 ## Paso 10 — Automatización (opcional)
 
 ### Auto-ingesta al terminar chat
+
 Ya configurado en `.cursor/hooks.json` → [[03 - Scripts y comandos#post-conversation.ts]]
+
+**Probar manualmente:**
+
+```bash
+bun run post-conversation
+```
+
+Salida esperada:
+
+```
+[post-conversation] Ingesting ...agent-transcripts....jsonl
+[post-conversation] Ingested: inserted=3, skipped=0
+[post-conversation] Extracted: processed=3, extracted=1
+```
+
+**Verificar automático:** terminar un chat → revisar canal **Hooks** en Output de Cursor.
 
 ### Watch continuo
 ```bash
@@ -168,10 +220,13 @@ Programar [[03 - Scripts y comandos#cron-extract.ts]] en Task Scheduler.
 
 ## Checklist de verificación
 
-- [ ] `bun run stats` muestra documentos en colecciones
+- [ ] `bun run stats` muestra documentos en `knowledge` por `type`
+- [ ] `bun run post-conversation` imprime `Ingested: inserted=N` (o `skipped` si ya existía)
+- [ ] `bun run extract` retorna `{ processed: N, extracted: N, skipped: N }`
+- [ ] Tras extract, `unextracted` en `conversation` baja en `bun run stats`
 - [ ] `bun run search "test"` retorna resultados
 - [ ] MCP server visible en Cursor con 5 tools
-- [ ] Hook post-conversación ingesta automáticamente
+- [ ] Al cerrar un chat, logs `[post-conversation]` en canal **Hooks**
 - [ ] Ollama responde en `http://localhost:11434`
 
-Ver también: [[08 - Replicar el sistema]], [[06 - Costos]]
+Ver también: [[03 - Scripts y comandos#Verificar hook y extract]], [[08 - Replicar el sistema]], [[06 - Costos]]

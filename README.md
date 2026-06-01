@@ -49,6 +49,7 @@ Sources → Ingestion → Chunking + Embeddings → MongoDB Atlas
 | `bun run mcp` | Start MCP server for Cursor |
 | `bun run webhook` | GitHub/GitLab webhook server |
 | `bun run watch:cursor` | Auto-ingest Cursor transcripts |
+| `bun run post-conversation` | Ingest latest Cursor transcript (same as hook) |
 | `bun run watch:obsidian` | Auto-sync Obsidian vault |
 
 ## Infrastructure

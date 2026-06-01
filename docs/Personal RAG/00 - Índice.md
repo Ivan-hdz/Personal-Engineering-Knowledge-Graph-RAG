@@ -16,12 +16,13 @@
 |------|-----------|
 | [[01 - Objetivo]] | Para qué existe el repo y qué problema resuelve |
 | [[02 - Arquitectura]] | Flujo de datos, colecciones MongoDB y componentes |
-| [[03 - Scripts y comandos]] | Todos los scripts, su función y relaciones |
+| [[03 - Scripts y comandos]] | Todos los scripts, su función y relaciones (incl. verificar hook/extract) |
 | [[04 - Packages]] | Paquetes del monorepo y dependencias entre ellos |
 | [[05 - Infraestructura]] | Terraform, Cloudflare Workers y webhooks |
 | [[06 - Costos]] | Path A (gratis) vs Path B (APIs mínimas) |
 | [[07 - Guía de inicio]] | Primeros pasos para usar el repo |
 | [[08 - Replicar el sistema]] | Cómo clonar y desplegar en otra máquina |
+| [[10 - MCP y Hooks globales]] | Usar MCP y hooks en **todos** tus repos, no solo aquí |
 
 ## Comandos rápidos
 
@@ -43,9 +44,15 @@ bun run mcp
 - [[ChatGPT]] — export `conversations.json`
 - [[Jira]] — issues y comentarios vía REST API
 
-## Colecciones MongoDB
+## Colección MongoDB
 
-- `conversations` — chats crudos chunked
-- `decisions` — decisiones arquitectónicas
-- `code_patterns` — patrones reutilizables
-- `incidents` — problemas resueltos
+Una sola colección polimórfica **`knowledge`**, discriminada por el campo `type`:
+
+| `type` | Contenido |
+|--------|-----------|
+| `conversation` | chats crudos chunked |
+| `decision` | decisiones arquitectónicas |
+| `pattern` | patrones reutilizables |
+| `incident` | problemas resueltos |
+
+> Requiere **un solo índice vectorial** en Atlas (ideal para M0 free tier).

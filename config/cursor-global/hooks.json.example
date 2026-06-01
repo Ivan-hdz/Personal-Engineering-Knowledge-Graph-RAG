@@ -3,7 +3,7 @@
   "hooks": {
     "stop": [
       {
-        "command": "bun .cursor/hooks/post-conversation.ts",
+        "command": "bun F:/Git/personal-rag/scripts/hooks/post-conversation.ts",
         "timeout": 120
       }
     ]

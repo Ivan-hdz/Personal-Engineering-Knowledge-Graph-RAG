@@ -1,7 +1,7 @@
 {
   "mcpServers": {
     "personal-rag": {
-      "command": "C:\\Users\\honte\\.bun\\bin\\bun.exe",
+      "command": "C:\\Users\\TU_USUARIO\\.bun\\bin\\bun.exe",
       "args": ["F:\\Git\\personal-rag\\scripts\\start-mcp.ts"]
     }
   }

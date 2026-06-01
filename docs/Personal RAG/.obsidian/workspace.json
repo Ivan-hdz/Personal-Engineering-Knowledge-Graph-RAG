@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "09 - Fundamentos teóricos.md",
+                "file": "03 - Scripts y comandos.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "09 - Fundamentos teóricos"
+              "title": "03 - Scripts y comandos"
             }
           }
         ]
@@ -94,7 +94,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "09 - Fundamentos teóricos.md",
+                "file": "03 - Scripts y comandos.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +104,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Enlaces entrantes de 09 - Fundamentos teóricos"
+              "title": "Enlaces entrantes de 03 - Scripts y comandos"
             }
           },
           {
@@ -113,12 +113,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "09 - Fundamentos teóricos.md",
+                "file": "03 - Scripts y comandos.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Enlaces salientes de 09 - Fundamentos teóricos"
+              "title": "Enlaces salientes de 03 - Scripts y comandos"
             }
           },
           {
@@ -156,13 +156,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "09 - Fundamentos teóricos.md",
+                "file": "03 - Scripts y comandos.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Esquema de 09 - Fundamentos teóricos"
+              "title": "Esquema de 03 - Scripts y comandos"
             }
           }
         ]
@@ -185,16 +185,18 @@
   },
   "active": "34ac19640af91e30",
   "lastOpenFiles": [
-    "00 - Índice.md",
-    "04 - Packages.md",
-    "09 - Fundamentos teóricos.md",
     "05 - Infraestructura.md",
-    "03 - Scripts y comandos.md",
+    "04 - Packages.md",
+    "07 - Guía de inicio.md",
+    "08 - Replicar el sistema.md",
+    "09 - Fundamentos teóricos.md",
+    "10 - MCP y Hooks globales.md",
+    "00 - Índice.md",
+    "GitLab.md",
     "02 - Arquitectura.md",
     "01 - Objetivo.md",
+    "03 - Scripts y comandos.md",
     "Bienvenido.md",
-    "08 - Replicar el sistema.md",
-    "07 - Guía de inicio.md",
     "06 - Costos.md"
   ]
 }

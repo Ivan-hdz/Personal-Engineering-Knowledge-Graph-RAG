@@ -43,7 +43,7 @@ async function ingestDocument(
   doc: Record<string, unknown>,
 ): Promise<{ inserted: boolean }> {
   const db = client.db("personal-rag");
-  const collection = db.collection("conversations");
+  const collection = db.collection("knowledge");
   const contentHash = hashContent(doc.content as string);
   const existing = await collection.findOne({ contentHash });
   if (existing) return { inserted: false };

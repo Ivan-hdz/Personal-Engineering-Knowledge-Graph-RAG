@@ -1,5 +1,5 @@
 #!/usr/bin/env bun
-import { closeDb, COLLECTIONS, getCollection } from "@personal-rag/core";
+import { closeDb, COLLECTION, getCollection } from "@personal-rag/core";
 import {
   ingestCursorTranscripts,
   ingestCursorFile,
@@ -19,11 +19,29 @@ import {
 const [, , command, ...args] = process.argv;
 
 async function stats() {
-  for (const name of Object.values(COLLECTIONS)) {
-    const collection = await getCollection(name);
-    const total = await collection.countDocuments();
-    const unextracted = await collection.countDocuments({ extracted: { $ne: true } });
-    console.log(`${name}: ${total} documents (${unextracted} unextracted)`);
+  const collection = await getCollection(COLLECTION);
+
+  const byType = await collection
+    .aggregate<{ _id: string; total: number; unextracted: number }>([
+      {
+        $group: {
+          _id: "$type",
+          total: { $sum: 1 },
+          unextracted: {
+            $sum: { $cond: [{ $ne: ["$extracted", true] }, 1, 0] },
+          },
+        },
+      },
+      { $sort: { _id: 1 } },
+    ])
+    .toArray();
+
+  const total = byType.reduce((sum, row) => sum + row.total, 0);
+  const unextracted = byType.reduce((sum, row) => sum + row.unextracted, 0);
+
+  console.log(`${COLLECTION}: ${total} documents (${unextracted} unextracted)`);
+  for (const row of byType) {
+    console.log(`  ${row._id}: ${row.total} (${row.unextracted} unextracted)`);
   }
 }
 

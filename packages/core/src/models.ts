@@ -114,27 +114,19 @@ export type ExtractedKnowledge = z.infer<typeof ExtractedKnowledgeSchema>;
 export type SearchFilters = z.infer<typeof SearchFiltersSchema>;
 export type IngestInput = z.infer<typeof IngestInputSchema>;
 
-export const COLLECTIONS = {
-  conversations: "conversations",
-  decisions: "decisions",
-  code_patterns: "code_patterns",
-  incidents: "incidents",
-} as const;
+export const COLLECTION = "knowledge" as const;
 
-export type CollectionName = (typeof COLLECTIONS)[keyof typeof COLLECTIONS];
+export type CollectionName = typeof COLLECTION;
 
-export function collectionForType(type: DocumentType): CollectionName {
-  switch (type) {
-    case "conversation":
-      return COLLECTIONS.conversations;
-    case "decision":
-      return COLLECTIONS.decisions;
-    case "pattern":
-      return COLLECTIONS.code_patterns;
-    case "incident":
-      return COLLECTIONS.incidents;
-  }
-}
+/** Legacy collection names used before the polymorphic `knowledge` collection. */
+export const LEGACY_COLLECTIONS = [
+  "conversations",
+  "decisions",
+  "code_patterns",
+  "incidents",
+] as const;
+
+export type LegacyCollectionName = (typeof LEGACY_COLLECTIONS)[number];
 
 export interface SearchResult {
   id: string;
